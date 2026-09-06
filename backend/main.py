@@ -18,3 +18,4 @@ character = Character()
 @app.get("/api/character")
 def get_character():
     return character.get_random_character()
+
