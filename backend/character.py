@@ -1,7 +1,6 @@
 import requests
 import json
 import random
-import time
 import redis
 
 class Character: 
@@ -17,10 +16,12 @@ class Character:
     def _fetch_total_characters(self):
         cached_count = self.redis_client.get(self.CACHE_KEY)
         if cached_count:
+            print("Cache HIT, returning cached value")
             return int(cached_count)
         else:
             total_characters = requests.get(self.character_url).json()['info']['count']
             self.redis_client.setex(name=self.CACHE_KEY, time=self.CACHE_TTL, value=total_characters)
+            print("Cache MISS, fetching from API and caching the value")
             return total_characters
 
         # This function generates a random number between 1 and the total number of characters in the Rick and Morty API

@@ -50,11 +50,11 @@ function CharacterCard({ character }: CharacterCardProps) {
           </div>
           <div>
             <dt>Origin</dt>
-            <dd>{displayValue(character.origin.name)}</dd>
+            <dd>{displayValue(character.origin)}</dd>
           </div>
           <div className="character-card-location">
             <dt>Location</dt>
-            <dd>{displayValue(character.location.name)}</dd>
+            <dd>{displayValue(character.location)}</dd>
           </div>
         </dl>
       </div>

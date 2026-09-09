@@ -1,9 +1,3 @@
-/** Location or origin as returned by the Rick and Morty API. */
-export type NamedPlace = {
-  name: string
-  url: string
-}
-
 /**
  * Character payload the frontend expects from the backend.
  * GET /api/character
@@ -15,7 +9,7 @@ export type Character = {
   species: string
   type: string
   gender: string
-  origin: NamedPlace
-  location: NamedPlace
+  origin: string
+  location: string
   image: string
 }
