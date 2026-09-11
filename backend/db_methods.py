@@ -11,12 +11,21 @@ DB_PARAMS = {
         
 
 def fetch_character_data():
-    try: 
-        response = requests.get("https://rickandmortyapi.com/api/character/")
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching character data: {e}")
-        return []  
+    char_url = "https://rickandmortyapi.com/api/character/"
+    total_pages = requests.get(char_url).json()['info']['pages']
+    current_page = 1
+    all_characters = []
+    while current_page <= total_pages:
+         try: 
+            response = requests.get(f"{char_url}?page={current_page}")
+            all_characters.extend(response.json()['results'])
+            current_page += 1
+         except requests.exceptions.RequestException as e:
+            print(f"Error fetching character data: {e}")
+            break
+    return all_characters  
+    
+
 
 def insert_character_data(response):
 
@@ -39,7 +48,7 @@ def insert_character_data(response):
 
         rows = [
              (character['name'], character['status'], character['species'], character['type'], character['gender'])
-             for character in response['results']
+             for character in response
         ]
         cursor.executemany(
             """
@@ -52,7 +61,7 @@ def insert_character_data(response):
         conn.commit()
         cursor.close()
 
-
+insert_character_data(fetch_character_data())
  
 
 
