@@ -43,3 +43,7 @@ class Character:
             "location": data['location'],
             "image": data['image'],
         }
+
+    def get_character(self):
+        data = requests.get(f"{self.character_url}").json()
+        return data

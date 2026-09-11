@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 
+
 from character import Character
 
 app = FastAPI()
@@ -16,6 +17,6 @@ app.add_middleware(
 
 character = Character()
 @app.get("/api/character")
-def get_character():
-    return character.get_random_character()
+def get_characters():
+    return character.get_random_character
 
