@@ -30,7 +30,7 @@ class Character:
         return random.randint(1, totalCharacters)
 
         # This function fetches a random character from the Rick and Morty API and prints the character's data in a formatted JSON structure
-    def get_random_character(self):
+    def get_random_character_from_api(self):
         data = requests.get(f"{self.character_url}{self._gen_random_number()}").json()
         return{
             "id": data['id'],
@@ -44,6 +44,18 @@ class Character:
             "image": data['image'],
         }
 
-    def get_character(self):
-        data = requests.get(f"{self.character_url}").json()
-        return data
+    def get_select_character_from_api(self, character_id):
+        data = requests.get(f"{self.character_url}{character_id}").json()
+        return{
+            "id": data['id'],
+            "name": data['name'],
+            "status": data['status'],
+            "species": data['species'],
+            "type": data['type'],
+            "gender": data['gender'],
+            "origin": data['origin'],
+            "location": data['location'],
+            "image": data['image'],
+        }
+
+
