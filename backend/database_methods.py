@@ -18,16 +18,10 @@ DB_PARAMS = {
 
 #Accepts a create table and insert table statement from characters/episodes/locations
 #Seeds corresponding database
-def seed_database(response, create_table_statement, insert_table_statement):
+def seed_database(create_table_statement, insert_table_statement, rows):
 
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
-
-        rows = [
-             (character['id'], character['name'], character['status'], character['species'], character['type'], 
-              character['gender'], character['origin']['name'], character['location']['name'], character['image'])
-             for character in response
-        ]
 
         cursor.execute(create_table_statement)
 
@@ -67,16 +61,16 @@ def get_random_database_id(random_select_statement):
 def get_data(total_elements, url):
     ids = list(range(1, total_elements + 1))
 
-    all_elements = []
+    response = []
 
     try: 
-        all_elements.extend(requests.get(f"{url}{ids}").json())
+        response.extend(requests.get(f"{url}{ids}").json())
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
 
     #Returns response from API
-    return all_elements
+    return response
 
     
 #Accepts an id number (or randomly generated number from method)
@@ -107,6 +101,8 @@ def return_data (id, select_statement):
 
 
 
+
+#Everything below this comment has not been updated
 
 
 

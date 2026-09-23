@@ -21,7 +21,7 @@ character = Character()
 def main():
     all_character_data = database_methods.get_data(Character._get_total_characters(),character.url)
 
-    database_methods.seed_database(all_character_data, Character.create_statement(), Character.insert_statement())
+    database_methods.seed_database(Character.create_statement(), Character.insert_statement(), Character.format_api_response(all_character_data))
 
     character_data = database_methods.return_data(database_methods.get_random_database_id(Character.get_random_select_statement()),Character.get_character_select_query())
     if character_data is None: 

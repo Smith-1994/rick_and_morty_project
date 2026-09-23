@@ -101,12 +101,23 @@ class Character:
         )
 
 
+#Accepts the full API response from database_methods
+#Returns data formatted to be inserted into SQL database
+    def format_api_response(response):
+        rows = [
+             (character['id'], character['name'], character['status'], character['species'], character['type'], 
+              character['gender'], character['origin']['name'], character['location']['name'], character['image'])
+             for character in response
+        ]  
+        return rows     
 
 
 
 
 
 
+
+#Everything below this comment has not been updated
 
 
 
