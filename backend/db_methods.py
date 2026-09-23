@@ -3,6 +3,8 @@ import time
 import psycopg2
 import requests
 
+from character import Character
+
 
 
 DB_PARAMS = {
@@ -12,10 +14,10 @@ DB_PARAMS = {
     "user": "postgres",
     "password": "",
 }
-        
+
+char_url = "https://rickandmortyapi.com/api/character/"        
 
 def fetch_character_data():
-    char_url = "https://rickandmortyapi.com/api/character/"
     first_page = requests.get(char_url)
     first_page.raise_for_status() #Used to check for HTTP error before loop begins
     total_pages = requests.get(char_url).json()['info']['pages']
@@ -63,8 +65,9 @@ def _get_page(char_url, page_number, max_retries=3):
 
                 return []  # Return an empty list if all retries fail
 
-def insert_character_data(response):
+def seed_character_data(response):
 
+        # TO FIX: check if table exists and truncate it if exists instead of fully loading it every time
 
         conn = psycopg2.connect(**DB_PARAMS)
         cursor = conn.cursor()
@@ -159,11 +162,20 @@ def get_random_database_character_id():
         cursor.close()
         conn.close()
 
-db_loaded = False
-if not db_loaded:
-    insert_character_data(fetch_character_data())
-    print("Database data being seeded...")
-    db_loaded = True
+def get_characters_array():
+    total_characters = Character._fetch_total_characters()
+    character_ids = list(range(1, total_characters + 1))
 
+    all_characters = []
+
+    try: 
+        all_characters.extend(requests.get(f"{char_url}{character_ids}").json())
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching character data: {e}")
+
+    return all_characters
+
+    
 
 
